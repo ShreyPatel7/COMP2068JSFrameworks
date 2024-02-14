@@ -1,81 +1,70 @@
-// Importing the prompt module to get the response from the user
-const prompt = require('prompt');
+const inputPrompt = require('prompt');
 
-// an constanr array for the total available options for the game
-const options = ['ROCK', 'PAPER', 'SCISSORS'];
-
-// Function to get the users response
-function getUserInput() {
+// Function to prompt the user to choose ROCK, PAPER, or SCISSORS for the game
+function getInput() {
     
-    prompt.get(['userSelection'], function (err, result) {
-        // Handling any errors that might come during users input
+    inputPrompt.start();
+
+    // Getting user input from the console terminal.
+    inputPrompt.get(['userPick'], function (err, result) {
+        // Handling any errors that might occur during user input
         if (err) { 
-            // Printing the error message in the console
             return console.error(err); 
         }
 
-        // Extracting the users choice from the result and convert it to uppercase letters
-        const userSelection = result.userSelection.toUpperCase();
-        
-        // Validating the user input
-        if (!options.includes(userSelection)) {
-            // If the users input is not one of the valid options, prompt again for the user
-            console.log("Invalid input. Please enter ROCK, PAPER, or SCISSORS.");
-            getUserInput();
-        } else {
-            // If the users input is valid then proceed to generate the computers selection for the game
-            console.log("User selected: " + userSelection);
-            generateComputerSelection(userSelection);
-        }
+        // Extracting and converting the user's choice to uppercase
+        const userPick = result.userPick.toUpperCase();
+        // Logging the user's pick
+        console.log("User picked: " + userPick);
+        // Generating the computer's pick based on user's input
+        generateComputerPick(userPick);
     });
 }
 
-// Function to generate the computers selection
-function generateComputerSelection(userSelection) {
+// Function to generate the computer's selection
+function generateComputerPick(userPick) {
     // Generating a random number between 0 and 1
-    const random = Math.random();
-    // Initializing a variable to store the computers selection
-    let computerSelection;
+    const randomNumber = Math.random();
+    // Variable to store the computer's pick
+    let computerPick;
 
-    // Determining the computer's selection based on the random number
-    if (random >= 0 && random <= 0.34) {
-        computerSelection = 'PAPER';
-    } else if (random > 0.34 && random <= 0.67) {
-        computerSelection = 'SCISSORS';
+    // Determining the computer's pick based on the random number
+    if (randomNumber < 0.34) {
+        computerPick = 'PAPER';
+    } else if (randomNumber < 0.67) {
+        computerPick = 'SCISSORS';
     } else {
-        computerSelection = 'ROCK';
+        computerPick = 'ROCK';
     }
 
-    // Printing the computers selection
-    console.log("Computer selected: " + computerSelection);
-    // After generating the computers selection, proceeding to determine the winner
-    determineWinner(userSelection, computerSelection);
+    // Logging the computer's pick
+    console.log("Computer picked: " + computerPick);
+    // Determining the winner based on the user's and computer's picks
+    determineWinner(userPick, computerPick);
 }
 
 // Function to determine the winner of the game
-function determineWinner(userSelection, computerSelection) {
-    // Initializing a variable to store the outcome of the game
-    let outcome;
-
-    // Determining the outcome based on the users and computers selections
-    if (userSelection === computerSelection) {
-        outcome = "It's a tie";
-    } else if (
-        (userSelection === 'ROCK' && computerSelection === 'SCISSORS') ||
-        (userSelection === 'PAPER' && computerSelection === 'ROCK') ||
-        (userSelection === 'SCISSORS' && computerSelection === 'PAPER')
+function determineWinner(userPick, computerPick) {
+    // Checking for a tie
+    if (userPick === computerPick) {
+        console.log("It's a tie");
+    } 
+    // Checking for user wins
+    else if (
+        (userPick === 'ROCK' && computerPick === 'SCISSORS') ||
+        (userPick === 'PAPER' && computerPick === 'ROCK') ||
+        (userPick === 'SCISSORS' && computerPick === 'PAPER')
     ) {
-        outcome = "User Wins";
-    } else {
-        outcome = "Computer Wins";
+        console.log("User Wins");
+    } 
+    // If not a tie or user win, then computer wins
+    else {
+        console.log("Computer Wins");
     }
-
-    // Printing the outcome of the game
-    console.log(outcome);
 }
 
-// Welcome message for the users playing the game
-console.log("Welcome to Rock,Paper,Scissors game created by Shrey Patel using javascript and running in node environment.");
-// Starting the game by prompting the user for their input
-prompt.start();
-getUserInput();
+// Welcome message
+console.log("Welcome to Rock, Paper, Scissors game!");
+
+// Start the game
+getInput();
