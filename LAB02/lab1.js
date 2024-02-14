@@ -64,7 +64,7 @@ function determineWinner(userPick, computerPick) {
 }
 
 // Welcome message
-console.log("Welcome to Rock, Paper, Scissors game!");
+console.log("Welcome to Rock, Paper, Scissors game by Shrey Patel created in Javascript");
 
 // Start the game
 getInput();
